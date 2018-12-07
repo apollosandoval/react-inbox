@@ -44,7 +44,25 @@ class App extends Component {
   selectAll = (status) => {
     this.setState(state => ({
       messages: state.messages.reduce( (acc, cv) => {
+        // reduce will apply status to all messages state.messages array
         cv.selected = status;
+        return [...acc, cv]
+      }, [])
+    }))
+  }
+
+  setLabel = (action, label) => {
+    this.setState(state => ({
+      messages: state.messages.reduce( (acc, cv) => {
+        if (cv.selected) {
+          if (action==="apply") {
+            // if the label exists don't add it again dingus!
+            cv.labels = cv.labels.includes(label) ? cv.labels : [...cv.labels, label]
+          } else if (action==="remove") {
+            // remove label from existing array of labels
+            cv.labels = cv.labels.filter(val => val !== label)
+          };
+        }
         return [...acc, cv]
       }, [])
     }))
@@ -54,7 +72,7 @@ class App extends Component {
     
     return (
       <div className="container">
-        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} />
+        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );

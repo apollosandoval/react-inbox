@@ -3,7 +3,7 @@ import React from 'react';
 class Toolbar extends React.Component {
 
     render() {
-        let {messages, setReadStatus, selectAll} = this.props;
+        let {messages, setReadStatus, selectAll, setLabel} = this.props;
         let selected = messages.filter(message => message.selected);
         let enabled = selected.length > 0;
 
@@ -29,14 +29,14 @@ class Toolbar extends React.Component {
                         Mark As Unread
                     </div>
                     {/* Apply label dropdown */}
-                    <select className="form-control label-select" disabled={!enabled}>
+                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('apply', e.target.value)}>
                         <option>Apply Label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
                         <option value="gschool">gschool</option>
                     </select>
                     {/* Remove label dropdown */}
-                    <select className="form-control label-select" disabled={!enabled}>
+                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('remove', e.target.value)}>
                         <option>Remove Label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
