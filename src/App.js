@@ -4,7 +4,7 @@ import Toolbar from './components/Toolbar';
 
 class App extends Component {
   state = {
-    messages: []
+    messages: [],
   }
 
   componentDidMount() {
@@ -41,11 +41,20 @@ class App extends Component {
     }))
   }
 
+  selectAll = (status) => {
+    this.setState(state => ({
+      messages: state.messages.reduce( (acc, cv) => {
+        cv.selected = status;
+        return [...acc, cv]
+      }, [])
+    }))
+  }
+
   render() {
     
     return (
       <div className="container">
-        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} />
+        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );

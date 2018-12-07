@@ -16,7 +16,7 @@ class Message extends React.Component {
                     <div className="row">
                         {/* checkbox input */}
                         <div className="col-xs-2">
-                            <input type="checkbox" onClick={() => this.handleClick('selected')} />
+                            <input type="checkbox" checked={message.selected ? "checked" : ""} onClick={() => this.handleClick('selected')} />
                         </div>
                         <div className="col-xs-2">
                             <i className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={() => this.handleClick('starred')}></i>
@@ -26,7 +26,7 @@ class Message extends React.Component {
                 <div className="col-xs-11">
                     {/* insert labels below */}
                     {labels}
-                    <a href="#">
+                    <a href="">
                         {message.subject}
                     </a>
                 </div>
