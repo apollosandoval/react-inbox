@@ -21,6 +21,7 @@ class App extends Component {
   toggleSelect = (message) => {
     this.setState( state => {
       messages: state.messages.reduce( (acc, cv) => {
+        // reduce will pass all elements through, only modifying the desired element's state
         if (cv.id === message.id) {
           cv.selected = !cv.selected;
         }
@@ -34,7 +35,7 @@ class App extends Component {
 
     return (
       <div className="container">
-        <Toolbar selected={selected} />
+        <Toolbar />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );
