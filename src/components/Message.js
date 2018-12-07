@@ -10,7 +10,7 @@ class Message extends React.Component {
         let {message} = this.props;
 
         return (
-            <div className={`row message unread ${message.selected ? 'selected' : ''}`}>
+            <div className={`row message ${message.read ? 'read' : 'unread'} ${message.selected ? 'selected' : ''}`}>
                 <div className="col-xs-1">
                     <div className="row">
                         {/* checkbox input */}

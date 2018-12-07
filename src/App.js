@@ -25,7 +25,18 @@ class App extends Component {
         if (cv.id === message.id) {
           cv[key] = !cv[key];
         }
-        return [...acc, cv]
+        return [...acc, cv];
+      }, [])
+    }))
+  }
+
+  setReadStatus = (status) => {
+    this.setState(state => ({
+      messages: state.messages.reduce( (acc, cv) => {
+        if (cv.selected) {
+          cv.read = status;
+        }
+        return [...acc, cv];
       }, [])
     }))
   }
@@ -34,7 +45,7 @@ class App extends Component {
     
     return (
       <div className="container">
-        <Toolbar />
+        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );
