@@ -18,7 +18,28 @@ class App extends Component {
       })
   }
 
+  patch = (messages, command) => {
+    const data = {
+      messageIds: messages.map(message => message.id),
+      command: command
+    }
+    
+    return fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then( res => {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+  }
+
   toggleSelect = (message, key) => {
+    console.log("running Toggle select on", message, key)
     this.setState(state => ({
       messages: state.messages.reduce( (acc, cv) => {
         // reduce will pass all elements through, only modifying the desired element's state
@@ -68,11 +89,24 @@ class App extends Component {
     }))
   }
 
+  deleteMessage = () => {
+    const messages = this.state.messages.filter(message => message.selected)
+    this.patch(messages, 'delete')
+      .then( (res) => {
+        this.setState({
+          messages: res
+        })
+      })
+    // this.setState({
+    //   messages: this.state.messages.filter(message => !message.selected)
+    // })
+  }
+
   render() {
     
     return (
       <div className="container">
-        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} />
+        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} deleteMessage={this.deleteMessage} />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );

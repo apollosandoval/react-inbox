@@ -3,7 +3,7 @@ import React from 'react';
 class Toolbar extends React.Component {
 
     render() {
-        let {messages, setReadStatus, selectAll, setLabel} = this.props;
+        let {messages, setReadStatus, selectAll, setLabel, deleteMessage} = this.props;
         let selected = messages.filter(message => message.selected);
         let enabled = selected.length > 0;
 
@@ -43,7 +43,7 @@ class Toolbar extends React.Component {
                         <option value="gschool">gschool</option>
                     </select>
                     {/* Trash Button */}
-                    <button className="btn btn-default" disabled={!enabled}>
+                    <button className="btn btn-default" disabled={!enabled} onClick={deleteMessage}>
                         <i className="fa fa-trash-o"></i>
                     </button>
                 </div>
