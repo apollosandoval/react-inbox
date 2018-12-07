@@ -13,26 +13,25 @@ class App extends Component {
       // .then ( json => this.setState({messages: json}) )
       .then ( data => {
         // add a 'selected' attribute to every message and initialize
-        data.map( message => message.selected=false);
+        data.map( message => message.selected=false );
         this.setState({messages: data})
       })
   }
 
-  toggleSelect = (message) => {
-    this.setState( state => {
+  toggleSelect = (message, key) => {
+    this.setState(state => ({
       messages: state.messages.reduce( (acc, cv) => {
         // reduce will pass all elements through, only modifying the desired element's state
         if (cv.id === message.id) {
-          cv.selected = !cv.selected;
+          cv[key] = !cv[key];
         }
         return [...acc, cv]
       }, [])
-    })
+    }))
   }
 
   render() {
-    let selected = this.state.messages.filter( message => message.selected === true);
-
+    
     return (
       <div className="container">
         <Toolbar />

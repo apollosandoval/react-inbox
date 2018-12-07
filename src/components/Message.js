@@ -2,26 +2,23 @@ import React from 'react';
 
 class Message extends React.Component {
     
-    handleClick = () => {
-        this.props.toggleSelect(this.props.message)
-        // Why aren't my components re-rendering? How can I do this without forceUpdate()?
-        this.forceUpdate();
+    handleClick = (key) => {
+        this.props.toggleSelect(this.props.message, key);
     }
 
     render() {
         let {message} = this.props;
-        console.log(message);
 
         return (
-            <div className={`row message unread ${message.selected==true ? 'selected' : ''}`}>
+            <div className={`row message unread ${message.selected ? 'selected' : ''}`}>
                 <div className="col-xs-1">
                     <div className="row">
                         {/* checkbox input */}
                         <div className="col-xs-2">
-                            <input type="checkbox" onClick={this.handleClick} />
+                            <input type="checkbox" onClick={() => this.handleClick('selected')} />
                         </div>
                         <div className="col-xs-2">
-                            <i className="star fa fa-star-o"></i>
+                            <i className={`star fa ${message.starred ? 'fa-star' : 'fa-star-o'}`} onClick={() => this.handleClick('starred')}></i>
                         </div>
                     </div>
                 </div>
