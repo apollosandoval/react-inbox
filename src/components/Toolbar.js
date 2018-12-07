@@ -12,7 +12,7 @@ class Toolbar extends React.Component {
                 <div className="col-md-12">
                     {/* unread message badge */}
                     <p className="pull-right">
-                        <span className="badge badge">2</span>
+                        <span className="badge badge">{messages.filter(message=>message.read===false).length}</span>
                         unread messages
                     </p>
                     {/* select all checkbox */}

@@ -8,6 +8,7 @@ class Message extends React.Component {
 
     render() {
         let {message} = this.props;
+        let labels = message.labels.map( label => <span className="label label-warning">{label}</span>);
 
         return (
             <div className={`row message ${message.read ? 'read' : 'unread'} ${message.selected ? 'selected' : ''}`}>
@@ -23,6 +24,8 @@ class Message extends React.Component {
                     </div>
                 </div>
                 <div className="col-xs-11">
+                    {/* insert labels below */}
+                    {labels}
                     <a href="#">
                         {message.subject}
                     </a>
