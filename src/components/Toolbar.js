@@ -29,14 +29,14 @@ class Toolbar extends React.Component {
                         Mark As Unread
                     </div>
                     {/* Apply label dropdown */}
-                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('apply', e.target.value)}>
+                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('addLabel', e.target.value)}>
                         <option>Apply Label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
                         <option value="gschool">gschool</option>
                     </select>
                     {/* Remove label dropdown */}
-                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('remove', e.target.value)}>
+                    <select className="form-control label-select" disabled={!enabled} onChange={(e) => setLabel('removeLabel', e.target.value)}>
                         <option>Remove Label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>

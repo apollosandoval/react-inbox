@@ -19,6 +19,7 @@ class App extends Component {
   }
 
   patch = (messages, command, cmd) => {
+    // how can I handle conditionally attaching a key to the data object more intelligently?
     const data = {
       messageIds: messages.map(message => message.id),
       command: command,
@@ -82,20 +83,27 @@ class App extends Component {
   }
 
   setLabel = (action, label) => {
-    this.setState(state => ({
-      messages: state.messages.reduce( (acc, cv) => {
-        if (cv.selected) {
-          if (action==="apply") {
-            // if the label exists don't add it again dingus!
-            cv.labels = cv.labels.includes(label) ? cv.labels : [...cv.labels, label]
-          } else if (action==="remove") {
-            // remove label from existing array of labels
-            cv.labels = cv.labels.filter(val => val !== label)
-          };
-        }
-        return [...acc, cv]
-      }, [])
-    }))
+    const messages = this.state.messages.filter(message => message.selected)
+    this.patch(messages, action, label)
+      .then((res) => {
+        this.setState({
+          messages: res
+        })
+      })
+    // this.setState(state => ({
+    //   messages: state.messages.reduce( (acc, cv) => {
+    //     if (cv.selected) {
+    //       if (action==="apply") {
+    //         // if the label exists don't add it again dingus!
+    //         cv.labels = cv.labels.includes(label) ? cv.labels : [...cv.labels, label]
+    //       } else if (action==="remove") {
+    //         // remove label from existing array of labels
+    //         cv.labels = cv.labels.filter(val => val !== label)
+    //       };
+    //     }
+    //     return [...acc, cv]
+    //   }, [])
+    // }))
   }
 
   deleteMessage = () => {
