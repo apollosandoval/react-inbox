@@ -18,10 +18,12 @@ class App extends Component {
       })
   }
 
-  patch = (messages, command) => {
+  patch = (messages, command, cmd) => {
     const data = {
       messageIds: messages.map(message => message.id),
-      command: command
+      command: command,
+      read: cmd,
+      label: cmd
     }
     
     return fetch('http://localhost:8082/api/messages', {
@@ -39,7 +41,7 @@ class App extends Component {
   }
 
   toggleSelect = (message, key) => {
-    console.log("running Toggle select on", message, key)
+    
     this.setState(state => ({
       messages: state.messages.reduce( (acc, cv) => {
         // reduce will pass all elements through, only modifying the desired element's state
@@ -52,14 +54,21 @@ class App extends Component {
   }
 
   setReadStatus = (status) => {
-    this.setState(state => ({
-      messages: state.messages.reduce( (acc, cv) => {
-        if (cv.selected) {
-          cv.read = status;
-        }
-        return [...acc, cv];
-      }, [])
-    }))
+    const messages = this.state.messages.filter(message => message.selected)
+    this.patch(messages, 'read', status)
+      .then((res) => {
+        this.setState({
+          messages: res
+        })
+      })
+    // this.setState(state => ({
+    //   messages: state.messages.reduce( (acc, cv) => {
+    //     if (cv.selected) {
+    //       cv.read = status;
+    //     }
+    //     return [...acc, cv];
+    //   }, [])
+    // }))
   }
 
   selectAll = (status) => {
