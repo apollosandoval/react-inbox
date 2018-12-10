@@ -3,7 +3,7 @@ import React from 'react';
 class Toolbar extends React.Component {
 
     render() {
-        let {messages, setReadStatus, selectAll, setLabel, deleteMessage} = this.props;
+        let {messages, setReadStatus, selectAll, setLabel, deleteMessage, toggleCompose} = this.props;
         let selected = messages.filter(message => message.selected);
         let enabled = selected.length > 0;
 
@@ -16,7 +16,7 @@ class Toolbar extends React.Component {
                         unread messages
                     </p>
                     {/* Compose email button */}
-                    <a className="btn btn-danger">
+                    <a className="btn btn-danger" onClick={toggleCompose}>
                         <i className="fa fa-plus"></i>
                     </a>
                     {/* select all checkbox */}

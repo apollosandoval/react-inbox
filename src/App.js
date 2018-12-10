@@ -6,6 +6,7 @@ import ComposeForm from './components/ComposeForm';
 class App extends Component {
   state = {
     messages: [],
+    compose: false
   }
 
   componentDidMount() {
@@ -41,6 +42,12 @@ class App extends Component {
     })
   }
 
+  toggleCompose = () => {
+    this.setState({
+      compose: !this.state.compose
+    })
+  }
+
   toggleSelect = (message, key) => {
     
     this.setState(state => ({
@@ -54,8 +61,19 @@ class App extends Component {
     }))
   }
 
+  toggleStarred = (message) => {
+    
+    this.patch([message], 'star')
+      .then( res => {
+        this.setState({
+          messages: res
+        })
+      })
+  }
+
   setReadStatus = (status) => {
-    const messages = this.state.messages.filter(message => message.selected)
+    const messages = this.state.messages.filter(message => message.selected);
+
     this.patch(messages, 'read', 'read', status)
       .then((res) => {
         this.setState({
@@ -83,7 +101,8 @@ class App extends Component {
   }
 
   setLabel = (action, label) => {
-    const messages = this.state.messages.filter(message => message.selected)
+    const messages = this.state.messages.filter(message => message.selected);
+
     this.patch(messages, action, 'label', label)
       .then((res) => {
         this.setState({
@@ -145,12 +164,16 @@ class App extends Component {
   }
 
   render() {
-    
+    let composeForm;
+    if (this.state.compose) {
+          composeForm = <ComposeForm addMessage={this.addMessage} />
+        }
+
     return (
       <div className="container">
-        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} deleteMessage={this.deleteMessage} />
-        <ComposeForm addMessage={this.addMessage} />
-        <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
+        <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} deleteMessage={this.deleteMessage} toggleCompose={this.toggleCompose} />
+        {composeForm}
+        <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} toggleStarred={this.toggleStarred} />
       </div>
     );
   }

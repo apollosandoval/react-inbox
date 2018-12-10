@@ -3,7 +3,17 @@ import React from 'react';
 class Message extends React.Component {
     
     handleClick = (key) => {
-        this.props.toggleSelect(this.props.message, key);
+
+        switch (key) {
+            case 'selected':
+                this.props.toggleSelect(this.props.message, key);
+                break;
+            case 'starred':
+                this.props.toggleStarred(this.props.message);
+                break;
+            default:
+                break;
+        }
     }
 
     render() {
