@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MessageList from './components/MessageList';
 import Toolbar from './components/Toolbar';
+import ComposeForm from './components/ComposeForm';
 
 class App extends Component {
   state = {
@@ -18,14 +19,13 @@ class App extends Component {
       })
   }
 
-  patch = (messages, command, cmd) => {
+  patch = (messages, command, key, cmd) => {
     // how can I handle conditionally attaching a key to the data object more intelligently?
     const data = {
       messageIds: messages.map(message => message.id),
-      command: command,
-      read: cmd,
-      label: cmd
+      command: command
     }
+    data[key] = cmd;
     
     return fetch('http://localhost:8082/api/messages', {
       method: 'PATCH',
@@ -56,7 +56,7 @@ class App extends Component {
 
   setReadStatus = (status) => {
     const messages = this.state.messages.filter(message => message.selected)
-    this.patch(messages, 'read', status)
+    this.patch(messages, 'read', 'read', status)
       .then((res) => {
         this.setState({
           messages: res
@@ -84,7 +84,7 @@ class App extends Component {
 
   setLabel = (action, label) => {
     const messages = this.state.messages.filter(message => message.selected)
-    this.patch(messages, action, label)
+    this.patch(messages, action, 'label', label)
       .then((res) => {
         this.setState({
           messages: res
@@ -106,6 +106,31 @@ class App extends Component {
     // }))
   }
 
+  addMessage = (message) => {
+    console.log(message);
+    const data = {
+      subject: message.subject,
+      body: message.body,
+      labels: [],
+      read: false,
+      starred: false
+    };
+
+    fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then( res => res.json() )
+    .then( json => {
+      this.setState({
+        messages: [...this.state.messages, json]
+      })
+    })
+  }
+
   deleteMessage = () => {
     const messages = this.state.messages.filter(message => message.selected)
     this.patch(messages, 'delete')
@@ -124,6 +149,7 @@ class App extends Component {
     return (
       <div className="container">
         <Toolbar messages={this.state.messages} setReadStatus={this.setReadStatus} selectAll={this.selectAll} setLabel={this.setLabel} deleteMessage={this.deleteMessage} />
+        <ComposeForm addMessage={this.addMessage} />
         <MessageList messages={this.state.messages} toggleSelect={this.toggleSelect} />
       </div>
     );

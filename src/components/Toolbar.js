@@ -15,6 +15,10 @@ class Toolbar extends React.Component {
                         <span className="badge badge">{messages.filter(message=>message.read===false).length}</span>
                         unread messages
                     </p>
+                    {/* Compose email button */}
+                    <a className="btn btn-danger">
+                        <i className="fa fa-plus"></i>
+                    </a>
                     {/* select all checkbox */}
                     <button className="btn btn-default" onClick={() => selectAll(selected.length===messages.length ? false : true)}>
                         {/* !enabled means no messages are selected & selected.length === messages.length is all messages selected */}
